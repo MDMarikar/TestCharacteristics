@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Metrics Visualizer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #F7F7F7;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2, h3 {
+            margin-bottom: 20px;
+        }
+        .slider-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 80%;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .diagram-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .diagram {
+            text-align: center;
+            width: 45%;
+        }
+        .diagram canvas {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border: 1px solid #ddd;
+            display: block;
+            margin: 10px auto;
+        }
+        .key {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .key span {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        progress {
+            width: 100%;
+            height: 20px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        /* Your color styling here */
+
+#PPVBar::-webkit-progress-value {
+    background-color: red; /* Bar Color for PPVBar */
+}
+#PPVBar::-moz-progress-bar {
+    background-color: red; /* Bar Color for PPVBar in Mozilla Firefox */
+}
+
+#NPVBar::-webkit-progress-value {
+    background-color: lime; /* Bar Color for NPVBar */
+}
+#NPVBar::-moz-progress-bar {
+    background-color: lime; /* Bar Color for NPVBar in Mozilla Firefox */
+}
+      
+    </style>
+</head>
+<body>
+    <h2>Test Characteristics Visualization</h2>
+
+    <!-- Sliders and Values -->
+    <div class="slider-container">
+        <label>Prevalence:</label> 
+        <input type="range" min="0" max="100" value="50" id="prevalenceRange">
+        <span id="prevalenceValue">50</span>%
+    </div>
+    <div class="slider-container">
+        <label>Sensitivity:</label> 
+        <input type="range" min="0" max="100" value="80" id="sensitivityRange">
+        <span id="sensitivityValue">80</span>%
+    </div>
+    <div class="slider-container">
+        <label>Specificity:</label> 
+        <input type="range" min="0" max="100" value="80" id="specificityRange">
+        <span id="specificityValue">80</span>%
+    </div>
+
+    <!-- Confusion Matrix -->
+    <h3>Confusion Matrix</h3>
+    <table border="1">
+        <tr>
+            <td></td>
+            <td>Has Disease</td>
+            <td>No Disease</td>
+            <td>Total</td>
+        </tr>
+        <tr>
+            <td>Test Positive</td>
+            <td id="truePositive">4000</td>
+            <td id="falsePositive">2000</td>
+            <td id="totalPositive">6000</td>
+        </tr>
+        <tr>
+            <td>Test Negative</td>
+            <td id="falseNegative">1000</td>
+            <td id="trueNegative">3000</td>
+            <td id="totalNegative">4000</td>
+        </tr>
+        <tr>
+            <td>Total</td>
+            <td id="totalDisease">5000</td>
+            <td id="totalNoDisease">5000</td>
+            <td>10000</td>
+        </tr>
+    </table>
+
+    <!-- Metrics Calculation -->
+    <h3>Calculations</h3>
+    <div id="calculations"></div>
+  <br>
+
+  <h3>Population Diagrams</h3>
+  <div class="key"><span style="background: red;"></span>True Positives & False Positives</div>
+    <div class="key"><span style="background: green;"></span>True Negatives and False Negatives</div>
+    <!-- Population Diagrams and PPV, NPV visualizations -->
+    <div class="diagram-container">
+        <div class="diagram">
+            <h3>People with Disease</h3>
+            <canvas id="diseaseCanvas" width="200" height="200"></canvas>
+            PPV: <progress id="PPVBar" max="1" value="0"></progress> <span id="PPVValue">0</span>
+        </div>
+        <div class="diagram">
+            <h3>People without Disease</h3>
+            <canvas id="nonDiseaseCanvas" width="200" height="200"></canvas>
+            NPV: <progress id="NPVBar" max="1" value="0"></progress> <span id="NPVValue">0</span>
+        </div>
+      <!-- Key -->
+    
+    
+    </div>
+
+    <!-- ROC Curve Visualization -->
+    <h3>ROC Curve Visualization</h3>
+    <canvas id="ROCCanvas" width="200" height="200"></canvas>
+
+    <!-- Your JavaScript code here -->
+   <!-- JavaScript code remains the same -->
+   <script>
+        var population = 10000;
+        var prevalence = 0.5;
+        var sensitivity = 0.8;
+        var specificity = 0.8;
+
+        function updateDiagram() {
+            // Calculating values based on prevalence, sensitivity, and specificity
+            var positive = population * prevalence;
+            var negative = population - positive;
+
+            var truePositive = positive * sensitivity;
+            var falseNegative = positive - truePositive;
+
+            var trueNegative = negative * specificity;
+            var falsePositive = negative - trueNegative;
+
+            // Update Confusion Matrix
+            document.getElementById("truePositive").textContent = Math.round(truePositive);
+            document.getElementById("falsePositive").textContent = Math.round(falsePositive);
+            document.getElementById("trueNegative").textContent = Math.round(trueNegative);
+            document.getElementById("falseNegative").textContent = Math.round(falseNegative);
+            document.getElementById("totalPositive").textContent = Math.round(truePositive + falsePositive);
+            document.getElementById("totalNegative").textContent = Math.round(trueNegative + falseNegative);
+            document.getElementById("totalDisease").textContent = Math.round(positive);
+            document.getElementById("totalNoDisease").textContent = Math.round(negative);
+
+            // Calculate metrics based on Confusion Matrix
+            var calculatedSensitivity = truePositive / (truePositive + falseNegative);
+            var calculatedSpecificity = trueNegative / (trueNegative + falsePositive);
+            var PPV = truePositive / (truePositive + falsePositive);
+            var NPV = trueNegative / (trueNegative + falseNegative);
+
+       
+
+
+          //update proper calculations
+
+// update calculations
+            document.getElementById("calculations").innerHTML = "TP = True Positive, FP = False Positive, TN = True Negative, FN = false negative" + "<br>" +
+                "Sensitivity = TP / (TP + FN) = " + truePositive.toFixed() + " / (" + truePositive.toFixed() + " + " + falseNegative.toFixed() + ") = " + sensitivity.toFixed(2) + "<br>" +
+                "Specificity = TN / (TN + FP) = " + trueNegative.toFixed() + " / (" + trueNegative.toFixed() + " + " + falsePositive.toFixed() + ") = " + specificity.toFixed(2) + "<br>" +
+                "Positive Predictive Value (PPV) = TP / (TP + FP) = " + truePositive.toFixed() + " / (" + truePositive.toFixed() + " + " + falsePositive.toFixed() + ") = " + PPV.toFixed(2) + "<br>" +
+                "Negative Predictive Value (NPV) = TN / (TN + FN) = " + trueNegative.toFixed() + " / (" + trueNegative.toFixed() + " + " + falseNegative.toFixed() + ") = " + NPV.toFixed(2);
+        
+          //what
+          
+
+            // Update PPV and NPV visualizations
+            document.getElementById('PPVBar').value = PPV;
+            document.getElementById('NPVBar').value = NPV;
+            document.getElementById('PPVValue').textContent = PPV.toFixed(2);
+            document.getElementById('NPVValue').textContent = NPV.toFixed(2);
+
+            // Draw the pie charts
+            drawPieChart("diseaseCanvas", [truePositive, falseNegative], ["red", "green"]);
+            drawPieChart("nonDiseaseCanvas", [trueNegative, falsePositive], ["green", "red"]);
+
+            updateROC();
+        }
+
+
+
+       function updateROC() {
+      var TPR = sensitivity; 
+      var FPR = 1 - specificity; 
+
+      var canvas = document.getElementById('ROCCanvas');
+      var ctx = canvas.getContext('2d');
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
+      ctx.lineTo(canvas.width, 0);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(FPR * canvas.width, (1 - TPR) * canvas.height, 5, 0, 2 * Math.PI, false);
+      ctx.fill();
+
+      // Add labels
+      ctx.font = '14px Arial';
+      ctx.fillText('1 - Specificity', canvas.width / 2, canvas.height - 5);
+      ctx.save();
+      ctx.rotate(-Math.PI / 2);
+      ctx.textAlign = 'center';
+      ctx.fillText('Sensitivity', -canvas.height / 2, 15);
+      ctx.restore();
+  }
+
+
+        function drawPieChart(canvasId, data, colors) {
+            var canvas = document.getElementById(canvasId);
+            var ctx = canvas.getContext("2d");
+            var total = data.reduce((a, b) => a + b, 0);
+            var angleStart = 0;
+            for (var i in data) {
+                ctx.beginPath();
+                ctx.arc(100, 100, 100, angleStart, angleStart + Math.PI * 2 * (data[i] / total), false);
+                ctx.lineTo(100, 100);
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                angleStart += Math.PI * 2 * (data[i] / total);
+            }
+        }
+
+        function setupSliders() {
+            var prevalenceRange = document.getElementById('prevalenceRange');
+            var prevalenceValue = document.getElementById('prevalenceValue');
+            prevalenceValue.textContent = prevalenceRange.value;
+            prevalenceRange.oninput = function() {
+                prevalenceValue.textContent = this.value;
+                prevalence = this.value / 100;
+                updateDiagram();
+            }
+
+            var sensitivityRange = document.getElementById('sensitivityRange');
+            var sensitivityValue = document.getElementById('sensitivityValue');
+            sensitivityValue.textContent = sensitivityRange.value;
+            sensitivityRange.oninput = function() {
+                sensitivityValue.textContent = this.value;
+                sensitivity = this.value / 100;
+                updateDiagram();
+            }
+
+            var specificityRange = document.getElementById('specificityRange');
+            var specificityValue = document.getElementById('specificityValue');
+            specificityValue.textContent = specificityRange.value;
+            specificityRange.oninput = function() {
+                specificityValue.textContent = this.value;
+                specificity = this.value / 100;
+                updateDiagram();
+            }
+        }
+
+        setupSliders();
+        updateDiagram();
+    </script>
+</body>
+</html>
