@@ -114,3 +114,44 @@ progress {
 
   /* Add any additional styles for smaller screens here */
 }
+
+
+/* Fancy styles for the collapsible sections */
+.collapsible {
+  background-color: #f1f1f1;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 20px;
+  transition: background-color 0.3s;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+/* Add a "active" class to the collapsible when clicked (for active state) */
+.active {
+  background-color: #ddd;
+}
+
+/* Style the "arrow" icon inside the collapsible */
+.collapsible::after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+/* Style the "arrow" icon when the collapsible is active */
+.active::after {
+  content: "\2212";
+}
+
