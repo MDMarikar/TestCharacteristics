@@ -32,6 +32,7 @@
         </div>
     </div>
   
+<div class="collapsible">
   <h3>Population Diagrams</h3>
   <div class="key"><span style="background: red;"></span>True Positives or False Positives</div>
     <div class="key"><span style="background: green;"></span>True Negatives or False Negatives</div>
@@ -51,12 +52,16 @@
     
     
     </div>
+   </div>
 
     <!-- ROC Curve Visualization -->
+   <div class="collapsible">
     <h3>ROC</h3>
     <canvas id="ROCCanvas" width="200" height="200"></canvas>
+</div>
 
     <!-- Confusion Matrix -->
+   <div class="collapsible">
     <h3>Confusion Matrix</h3>
     <table border="1">
         <tr>
@@ -84,9 +89,10 @@
             <td>10000</td>
         </tr>
     </table>
-
+</div>
 
       <!-- Metrics Calculation -->
+   <div class="collapsible">
     <h3>Calculations</h3>
     <table id="calculations" border="1">
         <tr>
@@ -95,10 +101,13 @@
             </td>
         </tr>
     </table>
+   </div>
 
-    <br>
+    <div class="footer">
+            <a href="https://twitter.com/MDMarikar">Feedback</a>
+        </div>
 
-    <a href="https://twitter.com/MDMarikar">Feedback</a>
+
 
 
 
@@ -106,6 +115,7 @@
     <!-- Your JavaScript code here -->
    <!-- JavaScript code remains the same -->
   <script src="script.js"></script>
+  <script src="collapse.js"></script>
    
 </body>
 </html>
