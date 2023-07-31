@@ -1,0 +1,110 @@
+body {
+    /* Add top padding equal to the height of the header (adjust as needed) */
+    padding-top: 60px;  
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #f1f1f1;
+    padding: 20px;
+    z-index: 1000;
+    /* Add this to give the header a fixed width */
+    width: 100%;
+    /* This will prevent the page content from showing on the sides of the header */
+    overflow-x: hidden;
+}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+      
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #F7F7F7;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2, h3 {
+            margin-bottom: 20px;
+        }
+        .slider-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 80%;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+   
+
+.diagram-container {
+    display: flex;
+    justify-content: space-around; /* instead of space-between */
+    align-items: flex-start; /* align items to the start of the container */
+    width: 100%; /* Use the full width of the parent container */
+    flex-wrap: wrap; /* Allow items to wrap onto a new line */
+}
+
+.diagram {
+    flex: 1; /* Each diagram takes up an equal amount of space */
+    text-align: center;
+    max-width: 45%; /* Maximum width of each diagram */
+    margin: 1em; /* Add some space around each diagram */
+}
+
+      
+        .diagram canvas {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border: 1px solid #ddd;
+            display: block;
+            margin: 10px auto;
+        }
+        .key {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .key span {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        progress {
+            width: 100%;
+            height: 20px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        /* Your color styling here */
+
+#PPVBar::-webkit-progress-value {
+    background-color: red; /* Bar Color for PPVBar */
+}
+#PPVBar::-moz-progress-bar {
+    background-color: red; /* Bar Color for PPVBar in Mozilla Firefox */
+}
+
+#NPVBar::-webkit-progress-value {
+    background-color: lime; /* Bar Color for NPVBar */
+}
+#NPVBar::-moz-progress-bar {
+    background-color: lime; /* Bar Color for NPVBar in Mozilla Firefox */
+}
