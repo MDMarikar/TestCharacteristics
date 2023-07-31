@@ -7,13 +7,22 @@
     <style>
 
 
-        .header {
-            position: sticky;
-            top: 0;
-            background-color: #f1f1f1;
-            padding: 20px;
-            z-index: 1000;
-        }
+    body {
+    /* Add top padding equal to the height of the header (adjust as needed) */
+    padding-top: 60px;  
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #f1f1f1;
+    padding: 20px;
+    z-index: 1000;
+    /* Add this to give the header a fixed width */
+    width: 100%;
+    /* This will prevent the page content from showing on the sides of the header */
+    overflow-x: hidden;
+}
         * {
             box-sizing: border-box;
             margin: 0;
