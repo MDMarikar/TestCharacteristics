@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Metrics Visualizer</title>
+   <link rel="stylesheet" href="TestViz2style.css">
+   
+</head>
+<body>
+
+<!-- Wrapping the header section in a div with class "header" -->
+<div class="header">
+
+  
+    <div class="controls-wrapper">
+        <!-- Sliders -->
+      <div class="slider-wrapper">
+            <!-- Sliders and Values -->
+        <div class="slider-container">
+            <label>Prevalence:</label> 
+            <input type="range" min="1" max="99" value="50" id="prevalenceRange">
+            <span id="prevalenceValue">50</span>%
+        </div>
+        <div class="slider-container">
+            <label>Sensitivity:</label> 
+            <input type="range" min="1" max="100" value="80" id="sensitivityRange">
+            <span id="sensitivityValue">80</span>%
+        </div>
+        <div class="slider-container">
+            <label>Specificity:</label> 
+            <input type="range" min="1" max="100" value="80" id="specificityRange">
+            <span id="specificityValue">80</span>%
+        </div>
+       <div class="checkbox-container">
+          <label for="relativePopulationSize">Show relative population size:</label>
+          <input type="checkbox" id="relativePopulationSize" />
+      </div>    
+     </div>
+        <!-- Key -->
+        
+        <div class="key-wrapper">
+           <!-- Population Key -->
+        <div class="key"><span style="background: red;"></span>True+ve (sensitivity)</div>
+        <div class="key"><span style="background: green;"></span>True-ve (specificity)</div>
+        <div class="key"><span style="background: yellow;"></span>False+ve</div>
+        <div class="key"><span style="background: pink;"></span>False-ve</div>
+        </div>
+    
+    </div>
+  
+</div>
+
+
+      
+ 
+
+<div class="diagram-container">
+    <div class="diagram">
+        <h4>Sensitivity</h4>
+        <canvas id="diseaseCanvas" width="200" height="200"></canvas>
+        <div class="metrics-box">
+            PPV <progress id="PPVBar" max="1" value="0"></progress> <span id="PPVValue">0</span>
+        </div>
+    </div>
+    <div class="diagram">
+        <h4>Specificity</h4>
+        <canvas id="nonDiseaseCanvas" width="200" height="200"></canvas>
+        <div class="metrics-box">
+            NPV <progress id="NPVBar" max="1" value="0"></progress> <span id="NPVValue">0</span>
+        </div>
+    </div>
+    <div class="roc">
+        <h4>ROC</h4>
+        <canvas id="ROCCanvas" width="200" height="200"></canvas>
+    </div>
+</div>
+
+
+  
+  
+
+    <!-- Confusion Matrix -->
+    <h4>Confusion Matrix</h4>
+    <table border="1">
+        <tr>
+            <td></td>
+            <td>Has Disease</td>
+            <td>No Disease</td>
+            <td>Total</td>
+        </tr>
+        <tr>
+            <td>Test Positive</td>
+            <td id="truePositive">4000</td>
+            <td id="falsePositive">2000</td>
+            <td id="totalPositive">6000</td>
+        </tr>
+        <tr>
+            <td>Test Negative</td>
+            <td id="falseNegative">1000</td>
+            <td id="trueNegative">3000</td>
+            <td id="totalNegative">4000</td>
+        </tr>
+        <tr>
+            <td>Total</td>
+            <td id="totalDisease">5000</td>
+            <td id="totalNoDisease">5000</td>
+            <td>10000</td>
+        </tr>
+    </table>
+
+
+      <!-- Metrics Calculation -->
+    <h4>Calculations</h4>
+    <table id="calculations" border="1">
+        <tr>
+            <td colspan="2">
+                TP = True Positive, FP = False Positive, TN = True Negative, FN = False Negative
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    Developed by D Marikar, <a href="https://twitter.com/MDMarikar">Feedback here</a>
+
+
+
+
+    <!-- Your JavaScript code here -->
+   <!-- JavaScript code remains the same -->
+  <script src="TestViz2script.js"></script>
+   
+</body>
+</html>
