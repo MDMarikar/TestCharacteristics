@@ -5,11 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Metrics Visualizer</title>
     <style>
+
+
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: #f1f1f1;
+            padding: 20px;
+            z-index: 1000;
+        }
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
+
+      
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
@@ -92,24 +104,31 @@
     </style>
 </head>
 <body>
-    <h2>Test Characteristics Visualization</h2>
 
-    <!-- Sliders and Values -->
-    <div class="slider-container">
-        <label>Prevalence:</label> 
-        <input type="range" min="0" max="100" value="50" id="prevalenceRange">
-        <span id="prevalenceValue">50</span>%
+
+<!-- Wrapping the header section in a div with class "header" -->
+    <div class="header">
+        <h2>Test Characteristics Visualization</h2>
+        
+        <!-- Sliders and Values -->
+        <div class="slider-container">
+            <label>Prevalence:</label> 
+            <input type="range" min="0" max="99" value="50" id="prevalenceRange">
+            <span id="prevalenceValue">50</span>%
+        </div>
+        <div class="slider-container">
+            <label>Sensitivity:</label> 
+            <input type="range" min="0" max="100" value="80" id="sensitivityRange">
+            <span id="sensitivityValue">80</span>%
+        </div>
+        <div class="slider-container">
+            <label>Specificity:</label> 
+            <input type="range" min="0" max="100" value="80" id="specificityRange">
+            <span id="specificityValue">80</span>%
+        </div>
     </div>
-    <div class="slider-container">
-        <label>Sensitivity:</label> 
-        <input type="range" min="0" max="100" value="80" id="sensitivityRange">
-        <span id="sensitivityValue">80</span>%
-    </div>
-    <div class="slider-container">
-        <label>Specificity:</label> 
-        <input type="range" min="0" max="100" value="80" id="specificityRange">
-        <span id="specificityValue">80</span>%
-    </div>
+  
+
 
     <!-- Confusion Matrix -->
     <h3>Confusion Matrix</h3>
@@ -140,10 +159,17 @@
         </tr>
     </table>
 
-    <!-- Metrics Calculation -->
+
+      <!-- Metrics Calculation -->
     <h3>Calculations</h3>
-    <div id="calculations"></div>
-  <br>
+    <table id="calculations" border="1">
+        <tr>
+            <td colspan="2">
+                TP = True Positive, FP = False Positive, TN = True Negative, FN = False Negative
+            </td>
+        </tr>
+    </table>
+
 
   <h3>Population Diagrams</h3>
   <div class="key"><span style="background: red;"></span>True Positives & False Positives</div>
@@ -207,16 +233,27 @@
        
 
 
-          //update proper calculations
+          
+          // Update calculations
+document.getElementById("calculations").innerHTML = `
+    <tr>
+        <td>Sensitivity = TP / (TP + FN)</td>
+        <td>${truePositive.toFixed()} / (${truePositive.toFixed()} + ${falseNegative.toFixed()}) = ${sensitivity.toFixed(2)}</td>
+    </tr>
+    <tr>
+        <td>Specificity = TN / (TN + FP)</td>
+        <td>${trueNegative.toFixed()} / (${trueNegative.toFixed()} + ${falsePositive.toFixed()}) = ${specificity.toFixed(2)}</td>
+    </tr>
+    <tr>
+        <td>Positive Predictive Value (PPV) = TP / (TP + FP)</td>
+        <td>${truePositive.toFixed()} / (${truePositive.toFixed()} + ${falsePositive.toFixed()}) = ${PPV.toFixed(2)}</td>
+    </tr>
+    <tr>
+        <td>Negative Predictive Value (NPV) = TN / (TN + FN)</td>
+        <td>${trueNegative.toFixed()} / (${trueNegative.toFixed()} + ${falseNegative.toFixed()}) = ${NPV.toFixed(2)}</td>
+    </tr>
+`;
 
-// update calculations
-            document.getElementById("calculations").innerHTML = "TP = True Positive, FP = False Positive, TN = True Negative, FN = false negative" + "<br>" +
-                "Sensitivity = TP / (TP + FN) = " + truePositive.toFixed() + " / (" + truePositive.toFixed() + " + " + falseNegative.toFixed() + ") = " + sensitivity.toFixed(2) + "<br>" +
-                "Specificity = TN / (TN + FP) = " + trueNegative.toFixed() + " / (" + trueNegative.toFixed() + " + " + falsePositive.toFixed() + ") = " + specificity.toFixed(2) + "<br>" +
-                "Positive Predictive Value (PPV) = TP / (TP + FP) = " + truePositive.toFixed() + " / (" + truePositive.toFixed() + " + " + falsePositive.toFixed() + ") = " + PPV.toFixed(2) + "<br>" +
-                "Negative Predictive Value (NPV) = TN / (TN + FN) = " + trueNegative.toFixed() + " / (" + trueNegative.toFixed() + " + " + falseNegative.toFixed() + ") = " + NPV.toFixed(2);
-        
-          //what
           
 
             // Update PPV and NPV visualizations
