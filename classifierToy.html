@@ -6,8 +6,20 @@
             width: 100%;
             height: 300px;
             position: relative;
+            margin-bottom: 15px;
+        }
+        #barContainer, #barContainerNeg {
+            width: 100%;
+            height: 30px;
+            position: relative;
+            margin-bottom: 15px;
         }
         .part {
+            height: 100%;
+            position: absolute;
+            bottom: 0;
+        }
+        .bar {
             height: 100%;
             position: absolute;
             bottom: 0;
@@ -19,7 +31,7 @@
             background: green;
         }
         #truePositive {
-            background: blue; /* Semi-transparent green */
+            background: blue; /* Semi-transparent green */ 
         }
         #falsePositive {
             background: gray; /* Semi-transparent red */
@@ -43,24 +55,40 @@
         p span {
             font-size: larger;
         }
+        /* Remove margin from headings */
+        h3 {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     Prevalence: <input type="range" min="0" max="100" value="50" id="prevalence" oninput="updateGraph()"><br>
     Sensitivity: <input type="range" min="0" max="100" value="50" id="sensitivity" oninput="updateGraph()"><br>
     Specificity: <input type="range" min="0" max="100" value="50" id="specificity" oninput="updateGraph()"><br>
+    <h3>Binary Classifier</h3>
     <div id="container">
         <div id="disease" class="part"></div>
         <div id="noDisease" class="part"></div>
         <div id="truePositive" class="part"></div>
         <div id="falsePositive" class="part"></div>
     </div>
+    <h3>PPV</h3>
+    <div id="barContainer">
+        <div id="truePositiveBar" class="bar" style="background: blue;"></div>
+        <div id="falsePositiveBar" class="bar" style="background: gray"></div>
+    </div>
+    <h3>NPV</h3>
+    <div id="barContainerNeg">
+        <div id="trueNegativeBar" class="bar" style="background: green;"></div>
+        <div id="falseNegativeBar" class="bar" style="background: red;"></div>
+    </div>
     <p>
-        <span style="background-color:blue">True Positive</span>
+        <span style="background-color: blue;">True Positive</span>
         <span style="background-color: gray;">False Positive</span>
         <span style="background-color: red;">False Negative</span>
         <span style="background-color: green;">True Negative</span>
     </p>
+    <p id="values"></p>
     <script>
         function updateGraph() {
             var prevalence = document.getElementById('prevalence').value;
@@ -70,6 +98,10 @@
             var noDisease = document.getElementById('noDisease');
             var truePositive = document.getElementById('truePositive');
             var falsePositive = document.getElementById('falsePositive');
+            var truePositiveBar = document.getElementById('truePositiveBar');
+            var falsePositiveBar = document.getElementById('falsePositiveBar');
+            var trueNegativeBar = document.getElementById('trueNegativeBar');
+            var falseNegativeBar = document.getElementById('falseNegativeBar');
 
             disease.style.width = prevalence + '%';
             noDisease.style.width = (100 - prevalence) + '%';
@@ -81,6 +113,32 @@
             falsePositive.style.width = (100 - prevalence) + '%';
             falsePositive.style.height = (100 - specificity) + '%';
             falsePositive.style.left = prevalence + '%';
+
+            var truePositives = prevalence * (sensitivity / 100);
+            var falsePositives = (100 - prevalence) * ((100 - specificity) / 100);
+            var totalPositives = truePositives + falsePositives;
+
+            var trueNegatives = (100 - prevalence) * (specificity / 100);
+            var falseNegatives = prevalence * ((100 - sensitivity) / 100);
+            var totalNegatives = trueNegatives + falseNegatives;
+
+            truePositiveBar.style.width = ((truePositives / totalPositives) * 100) + '%';
+            falsePositiveBar.style.width = ((falsePositives / totalPositives) * 100) + '%';
+            falsePositiveBar.style.left = truePositiveBar.style.width;
+
+            trueNegativeBar.style.width = ((trueNegatives / totalNegatives) * 100) + '%';
+            falseNegativeBar.style.width = ((falseNegatives / totalNegatives) * 100) + '%';
+            falseNegativeBar.style.left = trueNegativeBar.style.width;
+
+            var PPV = truePositives / totalPositives;
+            var NPV = trueNegatives / totalNegatives;
+
+            document.getElementById('values').innerHTML = 
+                'Prevalance:  ' + prevalence +'%  ' +
+                'Sensitivity: ' + sensitivity + '%, ' +
+                'Specificity: ' + specificity + '%, ' +
+                'Positive Predictive Value: ' + (PPV * 100).toFixed(2) + '%, ' +
+                'Negative Predictive Value: ' + (NPV * 100).toFixed(2) + '%';
         }
         updateGraph();
     </script>
