@@ -65,7 +65,14 @@
     Prevalence: <input type="range" min="1" max="99" value="50" id="prevalence" oninput="updateGraph()"><br>
     Sensitivity: <input type="range" min="1" max="99" value="50" id="sensitivity" oninput="updateGraph()"><br>
     Specificity: <input type="range" min="1" max="99" value="50" id="specificity" oninput="updateGraph()"><br>
-    <h3>Test Classification</h3>
+   <p>
+        <span style="background-color: blue;">True Positive</span>
+        <span style="background-color: gray;">False Positive</span>
+        <span style="background-color: red;">False Negative</span>
+        <span style="background-color: green;">True Negative</span>
+    </p>
+    
+      <h3>Test Classification</h3>
     <div id="container">
         <div id="disease" class="part"></div>
         <div id="noDisease" class="part"></div>
@@ -82,12 +89,7 @@
         <div id="trueNegativeBar" class="bar" style="background: green;"></div>
         <div id="falseNegativeBar" class="bar" style="background: red;"></div>
     </div>
-    <p>
-        <span style="background-color: blue;">True Positive</span>
-        <span style="background-color: gray;">False Positive</span>
-        <span style="background-color: red;">False Negative</span>
-        <span style="background-color: green;">True Negative</span>
-    </p>
+   
     <p id="values"></p>
         
     <p>
