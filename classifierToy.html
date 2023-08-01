@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+        .part {
+            height: 100%;
+            position: absolute;
+            bottom: 0;
+        }
+        #disease {
+            background: red;
+        }
+        #noDisease {
+            background: green;
+        }
+        #truePositive {
+            background: blue; /* Semi-transparent green */
+        }
+        #falsePositive {
+            background: gray; /* Semi-transparent red */
+        }
+        /* Styles to increase slider thumb size */
+        input[type=range] {
+            width: 100%;
+            height: 25px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        /* Increase size of color key text for better visibility on mobile */
+        p span {
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+    Prevalence: <input type="range" min="0" max="100" value="50" id="prevalence" oninput="updateGraph()"><br>
+    Sensitivity: <input type="range" min="0" max="100" value="50" id="sensitivity" oninput="updateGraph()"><br>
+    Specificity: <input type="range" min="0" max="100" value="50" id="specificity" oninput="updateGraph()"><br>
+    <div id="container">
+        <div id="disease" class="part"></div>
+        <div id="noDisease" class="part"></div>
+        <div id="truePositive" class="part"></div>
+        <div id="falsePositive" class="part"></div>
+    </div>
+    <p>
+        <span style="background-color:blue">True Positive</span>
+        <span style="background-color: gray;">False Positive</span>
+        <span style="background-color: red;">False Negative</span>
+        <span style="background-color: green;">True Negative</span>
+    </p>
+    <script>
+        function updateGraph() {
+            var prevalence = document.getElementById('prevalence').value;
+            var sensitivity = document.getElementById('sensitivity').value;
+            var specificity = document.getElementById('specificity').value;
+            var disease = document.getElementById('disease');
+            var noDisease = document.getElementById('noDisease');
+            var truePositive = document.getElementById('truePositive');
+            var falsePositive = document.getElementById('falsePositive');
+
+            disease.style.width = prevalence + '%';
+            noDisease.style.width = (100 - prevalence) + '%';
+            noDisease.style.left = prevalence + '%';
+
+            truePositive.style.width = prevalence + '%';
+            truePositive.style.height = sensitivity + '%';
+
+            falsePositive.style.width = (100 - prevalence) + '%';
+            falsePositive.style.height = (100 - specificity) + '%';
+            falsePositive.style.left = prevalence + '%';
+        }
+        updateGraph();
+    </script>
+</body>
+</html>
