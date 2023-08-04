@@ -61,6 +61,15 @@
         }
     </style>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N42X7CRPXB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N42X7CRPXB');
+</script>
 <body>
     Prevalence: <input type="range" min="1" max="99" value="50" id="prevalence" oninput="updateGraph()"><br>
     Sensitivity: <input type="range" min="1" max="99" value="50" id="sensitivity" oninput="updateGraph()"><br>
